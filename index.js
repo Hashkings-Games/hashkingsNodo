@@ -60,12 +60,15 @@ async function findAvailableNode() {
 app.all("*", async (req, res) => {
   const requestUrl = (await findAvailableNode()) + req.url;
   const method = req.method; // Obtenemos el método de la solicitud
+
   try {
     const response = await axios.request({
       url: requestUrl,
       method: method, // Usamos el método de la solicitud original
       data: req.body, // Pasamos los datos de la solicitud si es necesario
-      headers: req.headers,
+      headers: {
+        "Content-Type": "application/json", // Establece el tipo de contenido
+      },
     });
 
     res.send(response.data);
