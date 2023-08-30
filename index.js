@@ -51,7 +51,7 @@ async function findAvailableNode() {
       }
     } catch (error) {
       // Si hay un error, el nodo no está disponible
-      console.log("ningun nodo disponible")
+      console.log("ningun nodo disponible");
     }
   }
   return null; // Ningún nodo disponible
@@ -66,6 +66,7 @@ app.all("*", async (req, res) => {
       url: requestUrl,
       method: method, // Usamos el método de la solicitud original
       data: req.body, // Pasamos los datos de la solicitud si es necesario
+      headers: req.headers,
     });
 
     res.send(response.data);
