@@ -87,6 +87,27 @@ app.get("*", async (req, res) => {
   }
 });
 
+app.all("*", async (req, res) => {
+  const requestUrl = (await findAvailableNode()) + req.url;
+  const method = req.method; // Obtenemos el método de la solicitud
+
+  try {
+    const response = await axios.request({
+      url: requestUrl,
+      method: method, // Usamos el método de la solicitud original
+      data: req.body, // Pasamos los datos de la solicitud si es necesario
+    });
+
+    res.send(response.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).send(error.response.data);
+    } else {
+      res.status(500).send("Error al procesar la solicitud");
+    }
+  }
+});
+
 // Crea un servidor HTTPS utilizando los certificados y claves
 const httpsServer = https.createServer(credentials, app);
 
