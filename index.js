@@ -51,6 +51,7 @@ async function findAvailableNode() {
       }
     } catch (error) {
       // Si hay un error, el nodo no está disponible
+      console.log("ningun nodo disponible")
     }
   }
   return null; // Ningún nodo disponible
