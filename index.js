@@ -60,8 +60,6 @@ async function findAvailableNode() {
 app.all("*", async (req, res) => {
   const requestUrl = (await findAvailableNode()) + req.url;
   const method = req.method; // Obtenemos el método de la solicitud
-
-  req.headers.host = "nodo.hivekings.io"; // Cambiamos el host por el de nuestro dominio
   try {
     const response = await axios.request({
       url: requestUrl,
@@ -72,11 +70,11 @@ app.all("*", async (req, res) => {
 
     res.send(response.data);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     if (error.response) {
       res.status(error.response.status).send(error.response.data);
     } else {
-      res.status(500).send("Error al procesar la solicitud");
+      res.status(500).send("ERROR");
     }
   }
 });
