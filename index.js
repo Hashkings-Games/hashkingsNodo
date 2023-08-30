@@ -1,7 +1,8 @@
 const express = require("express");
+const https = require("https");
+const fs = require("fs");
 const axios = require("axios");
 
-const app = express();
 const port = 443; // Puerto en el que escuchará el servidor
 
 const nodes = [
@@ -22,10 +23,24 @@ const nodes = [
   "https://api.primersion.com",
 ];
 
-// Lee los archivos de certificado y clave privada para SSL/TLS
-const privateKey = fs.readFileSync("ruta/a/clave-privada.pem", "utf8");
-const certificate = fs.readFileSync("ruta/a/certificado.pem", "utf8");
-const credentials = { key: privateKey, cert: certificate };
+const privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/nodo.hivekings.io/privkey.pem",
+  "utf8"
+);
+const certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/nodo.hivekings.io/cert.pem",
+  "utf8"
+);
+const ca = fs.readFileSync(
+  "/etc/letsencrypt/live/nodo.hivekings.io/chain.pem",
+  "utf8"
+);
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: ca,
+};
 
 async function findAvailableNode() {
   for (const node of nodes) {
