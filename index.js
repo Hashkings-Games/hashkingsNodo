@@ -73,7 +73,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("*", async (req, res) => {
-  const requestUrl = findAvailableNode() + req.url;
+  const requestUrl = (await findAvailableNode())+ req.url;
 
   try {
     const response = await axios.get(requestUrl);
