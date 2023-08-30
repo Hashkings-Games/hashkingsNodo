@@ -2,7 +2,7 @@ const express = require("express");
 const https = require("https");
 const fs = require("fs");
 const axios = require("axios");
-
+const app = express();
 const port = 443; // Puerto en el que escuchará el servidor
 
 const nodes = [
