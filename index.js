@@ -57,36 +57,6 @@ async function findAvailableNode() {
   return null; // Ningún nodo disponible
 }
 
-app.get("/", async (req, res) => {
-  const selectedNode = await findAvailableNode();
-
-  if (selectedNode) {
-    try {
-      const response = await axios.get(selectedNode + req.url);
-      res.send(response.data);
-    } catch (error) {
-      res.status(500).send("Error al procesar la solicitud");
-    }
-  } else {
-    res.status(503).send("No hay nodos disponibles");
-  }
-});
-
-app.get("*", async (req, res) => {
-  const requestUrl = (await findAvailableNode())+ req.url;
-
-  try {
-    const response = await axios.get(requestUrl);
-    res.send(response.data);
-  } catch (error) {
-    if (error.response) {
-      res.status(error.response.status).send(error.response.data);
-    } else {
-      res.status(500).send("Error al procesar la solicitud");
-    }
-  }
-});
-
 app.all("*", async (req, res) => {
   const requestUrl = (await findAvailableNode()) + req.url;
   const method = req.method; // Obtenemos el método de la solicitud
